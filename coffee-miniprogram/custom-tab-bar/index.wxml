@@ -1,0 +1,18 @@
+<view class="tabbar">
+  <view
+    wx:for="{{tabs}}"
+    wx:key="key"
+    class="tab-item {{item.featured ? 'featured' : ''}}"
+    data-index="{{index}}"
+    data-path="{{item.path}}"
+    bindtap="onSwitch"
+  >
+    <view class="icon-wrap {{selected === index ? 'active' : ''}}">
+      <image class="icon" src="{{selected === index ? item.activeIcon : item.icon}}" mode="aspectFit" />
+      <view class="badge" wx:if="{{item.key === 'cart' && cartCount > 0}}">
+        {{cartCount > 99 ? '99+' : cartCount}}
+      </view>
+    </view>
+    <text class="label {{selected === index ? 'active' : ''}}">{{item.text}}</text>
+  </view>
+</view>

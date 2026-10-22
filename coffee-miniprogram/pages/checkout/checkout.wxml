@@ -1,0 +1,92 @@
+<nav-bar title="确认订单" subtitle="Checkout" showBack />
+
+<view class="page-bg page">
+  <view class="intro">
+    <text class="eyebrow">Almost There</text>
+    <text class="intro-title display">确认这一杯</text>
+    <text class="intro-desc">下单后请凭取餐号到吧台领取。</text>
+  </view>
+
+  <!-- 门店 -->
+  <view class="card block">
+    <view class="block-head">
+      <text class="block-label">取餐门店</text>
+      <text class="pickup-tag">到店自取</text>
+    </view>
+    <view class="store-row">
+      <view class="store-mark">N</view>
+      <view class="store-copy">
+        <text class="store-name">GXUFL Coffee · 东盟校区店</text>
+        <text class="store-addr">南宁市青秀区广西外国语学院东盟校区</text>
+        <text class="store-hours">营业时间 08:00 – 22:00</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 明细 -->
+  <view class="card block">
+    <view class="block-head">
+      <text class="block-label">订单明细</text>
+      <text class="block-note">{{items.length}} 款 · {{itemCount}} 件</text>
+    </view>
+    <view class="items">
+      <view class="item" wx:for="{{items}}" wx:key="key">
+        <image class="item-img" src="{{item.imageUrl}}" mode="aspectFill" />
+        <view class="item-body">
+          <text class="item-name">{{item.productName}}</text>
+          <text class="item-spec">{{item.specName || '标准规格'}}</text>
+          <view class="item-foot">
+            <text class="item-price">¥{{item.price}}</text>
+            <text class="item-qty">× {{item.quantity}}</text>
+          </view>
+        </view>
+        <text class="item-line">¥{{item.lineTotal}}</text>
+      </view>
+    </view>
+    <view class="total-row">
+      <text class="total-label">合计</text>
+      <text class="total-value"><text class="symbol">¥</text>{{totalText}}</text>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="card block">
+    <view class="block-head">
+      <text class="block-label">备注</text>
+      <text class="block-note">{{remark.length}} / 100</text>
+    </view>
+    <textarea
+      class="remark"
+      placeholder="例如：少冰、少糖、需要杯套…"
+      placeholder-class="remark-ph"
+      maxlength="100"
+      value="{{remark}}"
+      bindinput="onRemarkInput"
+    />
+  </view>
+
+  <!-- 支付 -->
+  <view class="pay-row">
+    <view class="pay-left">
+      <text class="pay-title">支付方式</text>
+      <text class="pay-sub">到店支付 · 取餐时结算</text>
+    </view>
+    <text class="pay-badge">到店支付</text>
+  </view>
+
+  <view class="agreement">
+    <text>提交订单即表示同意咖啡厅的取餐规则，制作完成后请 30 分钟内取餐。</text>
+  </view>
+
+  <view style="height: 220rpx;"></view>
+</view>
+
+<view class="bottom-bar">
+  <view class="bottom-total">
+    <text class="bottom-label">应付</text>
+    <text class="bottom-value"><text class="symbol">¥</text>{{totalText}}</text>
+  </view>
+  <view class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="submit">
+    {{submitting ? '提交中…' : '提交订单'}}
+  </view>
+</view>

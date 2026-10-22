@@ -1,0 +1,84 @@
+<nav-bar title="购物车" subtitle="Your tray" />
+
+<view class="page-bg page">
+  <!-- 未登录 -->
+  <view class="signin" wx:if="{{!loggedIn}}">
+    <text class="signin-mark display">“</text>
+    <text class="signin-title">登录后，这一杯才会被记住</text>
+    <text class="signin-desc">登录即可同步购物车、下单与取餐进度</text>
+    <button class="btn-gold signin-btn" bindtap="goLogin">登录 / 注册</button>
+  </view>
+
+  <block wx:if="{{loggedIn}}">
+    <view class="head" wx:if="{{items.length}}">
+      <text class="head-count">已选 <text class="gold">{{items.length}}</text> 款 · 共 {{totalCount}} 杯</text>
+      <text class="head-clear" bindtap="clearCart">清空</text>
+    </view>
+
+    <view class="list" wx:if="{{items.length}}">
+      <view class="cart-item {{item.productStatus !== 1 ? 'invalid' : ''}}" wx:for="{{items}}" wx:key="id">
+        <view
+          class="checkbox {{item.checked ? 'checked' : ''}} {{item.productStatus !== 1 ? 'disabled' : ''}}"
+          data-index="{{index}}"
+          bindtap="toggleItem"
+        >
+          <text wx:if="{{item.checked}}">✓</text>
+        </view>
+        <image class="item-img" src="{{item.imageUrl}}" mode="aspectFill" />
+        <view class="item-body">
+          <view class="item-head">
+            <text class="item-name">{{item.productName}}</text>
+            <view class="item-remove" data-id="{{item.id}}" bindtap="removeItem">×</view>
+          </view>
+          <text class="item-spec">{{item.specName || '标准规格'}}</text>
+          <view class="item-foot">
+            <text class="item-price">¥{{item.priceText}}</text>
+            <view class="stepper">
+              <view class="step-btn" data-index="{{index}}" data-delta="-1" bindtap="changeQty">−</view>
+              <text class="step-num">{{item.quantity}}</text>
+              <view class="step-btn" data-index="{{index}}" data-delta="1" bindtap="changeQty">+</view>
+            </view>
+          </view>
+          <text class="invalid-note" wx:if="{{item.productStatus !== 1}}">商品已下架，请移除后重新选择</text>
+        </view>
+      </view>
+
+      <view class="note">
+        <text class="note-label">温馨提示</text>
+        <text class="note-text">下单后请凭取餐号到吧台取餐，制作完成后会显示「待取餐」。</text>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!items.length && !loading}}">
+      <text class="mark">“</text>
+      <text class="title">购物车还是空的</text>
+      <text class="desc">去挑一杯属于今天的风味吧</text>
+      <button class="btn-outline empty-btn" bindtap="goMenu">去点单</button>
+    </view>
+
+    <view class="loading-box" wx:if="{{loading}}">
+      <view class="skeleton" style="height: 150rpx; border-radius: 24rpx; margin-bottom: 20rpx;"></view>
+      <view class="skeleton" style="height: 150rpx; border-radius: 24rpx;"></view>
+    </view>
+
+    <!-- 结算栏 -->
+    <view class="checkout-bar" wx:if="{{items.length}}">
+      <view class="all-check" bindtap="toggleAll">
+        <view class="checkbox {{allChecked ? 'checked' : ''}}">
+          <text wx:if="{{allChecked}}">✓</text>
+        </view>
+        <text>全选</text>
+      </view>
+      <view class="total">
+        <text class="total-label">合计</text>
+        <text class="total-value"><text class="total-symbol">¥</text>{{totalText}}</text>
+      </view>
+      <view class="checkout-btn {{selectedCount ? '' : 'disabled'}}" bindtap="checkout">
+        去结算
+      </view>
+    </view>
+  </block>
+
+  <view class="tab-space"></view>
+  <view style="height: {{items.length ? '140rpx' : '0'}};"></view>
+</view>

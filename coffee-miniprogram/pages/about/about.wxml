@@ -1,0 +1,117 @@
+<nav-bar overlay transparent showBack title="" />
+
+<view class="page-bg page">
+  <view class="hero">
+    <image class="hero-img" src="{{heroUrl}}" mode="aspectFill" />
+    <view class="hero-shade"></view>
+    <view class="hero-copy">
+      <text class="eyebrow">Our Story</text>
+      <text class="hero-title display">GXUFL</text>
+      <text class="hero-sub">咖 啡 厅 · COFFEE ATELIER</text>
+    </view>
+  </view>
+
+  <view class="sheet">
+    <view class="section first">
+      <view class="section-head">
+        <view>
+          <text class="section-sub">About Us</text>
+          <text class="section-title">关于我们</text>
+        </view>
+      </view>
+      <view class="text-block">
+        <text class="body-text">广西外国语学院咖啡厅坐落于南宁东盟校区，是校园里最具异域风情的休憩空间。我们以东南亚咖啡文化为核心，精选越南、泰国、印尼、马来西亚、新加坡、菲律宾六国特色咖啡，让师生在校园内即可品味一整个东南亚。</text>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-head">
+        <view>
+          <text class="section-sub">Philosophy</text>
+          <text class="section-title">我们的理念</text>
+        </view>
+      </view>
+      <view class="concepts">
+        <view class="concept">
+          <text class="concept-num display">01</text>
+          <view class="concept-body">
+            <text class="concept-title">多元文化融合</text>
+            <text class="concept-desc">广西是中国面向东盟的重要门户。咖啡厅以咖啡为世界语言，搭建东南亚各国文化交流的桥梁。</text>
+          </view>
+        </view>
+        <view class="concept">
+          <text class="concept-num display">02</text>
+          <view class="concept-body">
+            <text class="concept-title">品质至上</text>
+            <text class="concept-desc">咖啡豆从产地直采，从越南滴漏到泰式炼乳，从印尼麝香猫到马来白咖啡，每一杯都坚持现制。</text>
+          </view>
+        </view>
+        <view class="concept">
+          <text class="concept-num display">03</text>
+          <view class="concept-body">
+            <text class="concept-title">校园第三空间</text>
+            <text class="concept-desc">这里不只是喝咖啡的地方，也是学习交流、社团活动与语言实践的第三空间。</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-head">
+        <view>
+          <text class="section-sub">Coffee Map</text>
+          <text class="section-title">六国咖啡地图</text>
+        </view>
+      </view>
+      <view class="origin-list">
+        <view class="origin" wx:for="{{origins}}" wx:key="code">
+          <view class="origin-code">{{item.code}}</view>
+          <view class="origin-copy">
+            <text class="origin-name">{{item.name}}</text>
+            <text class="origin-coffee">{{item.coffee}}</text>
+          </view>
+          <text class="origin-en">{{item.en}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-head">
+        <view>
+          <text class="section-sub">Visit</text>
+          <text class="section-title">门店信息</text>
+        </view>
+      </view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-label">地址</text>
+          <text class="info-value">南宁市青秀区广西外国语学院东盟校区</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">营业时间</text>
+          <text class="info-value">周一至周五 08:00 – 22:00</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">周末</text>
+          <text class="info-value">09:00 – 23:00</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">联系电话</text>
+          <text class="info-value">0771-8888888</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">取餐方式</text>
+          <text class="info-value">线上下单 · 到店自取</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="brand-footer">
+      <text class="footer-en">GXUFL COFFEE ATELIER</text>
+      <text class="footer-cn">广西外国语学院 · 南宁</text>
+      <text class="footer-note">Coffee, carefully made.</text>
+    </view>
+
+    <view style="height: 80rpx;"></view>
+  </view>
+</view>

@@ -1,0 +1,110 @@
+<nav-bar title="点单" subtitle="Order at the bar" />
+
+<view class="page-bg page">
+  <view class="intro">
+    <text class="eyebrow">Daily Menu</text>
+    <text class="intro-title display">今日咖啡单</text>
+    <text class="intro-desc">六国风味，现点现做。下单后请留意取餐号。</text>
+  </view>
+
+  <view class="search-bar">
+    <image class="search-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C8A97E' stroke-width='1.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 21 21'/%3E%3C/svg%3E" mode="aspectFit" />
+    <input
+      class="search-input"
+      placeholder="搜索咖啡、风味或产地"
+      placeholder-class="search-ph"
+      confirm-type="search"
+      value="{{keyword}}"
+      focus="{{searchFocus}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearchConfirm"
+    />
+    <view class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">
+      <text>×</text>
+    </view>
+  </view>
+
+  <scroll-view class="chips-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="chip {{activeCategoryId === null ? 'active' : ''}}" data-id="" bindtap="selectCategory">
+      <text>全部</text>
+    </view>
+    <view
+      class="chip {{activeCategoryId === item.id ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="selectCategory"
+    >
+      <text>{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <view class="list" wx:if="{{!loading}}">
+    <view
+      class="product-row"
+      wx:for="{{products}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="goDetail"
+    >
+      <view class="row-media">
+        <image class="row-img" src="{{item.imageUrl}}" mode="aspectFill" />
+        <view class="row-tag" wx:if="{{item.tags.length}}">{{item.tags[0]}}</view>
+      </view>
+      <view class="row-body">
+        <view class="row-top">
+          <text class="row-name">{{item.name}}</text>
+          <text class="row-rating">★ {{item.ratingText}}</text>
+        </view>
+        <text class="row-sub">{{item.subtitle}}</text>
+        <view class="row-bottom">
+          <view class="price-line">
+            <text class="row-price">¥{{item.priceText}}</text>
+            <text class="row-origin" wx:if="{{item.originalPriceText}}">¥{{item.originalPriceText}}</text>
+          </view>
+          <view class="row-add" data-id="{{item.id}}" catchtap="addToCart">
+            <text>{{item.hasSpecs ? '选规格' : '+'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!products.length}}">
+      <text class="mark">“</text>
+      <text class="title">{{keyword ? '没有找到这杯咖啡' : '菜单正在准备中'}}</text>
+      <text class="desc">{{keyword ? '换一个关键词试试，比如「冰」或「越南」' : '请稍后再来'}}</text>
+    </view>
+
+    <view class="load-state" wx:if="{{products.length}}">
+      <text wx:if="{{loadingMore}}">正在续杯…</text>
+      <text wx:elif="{{hasMore}}">上滑看更多</text>
+      <text wx:else>— 已经到底了 —</text>
+    </view>
+  </view>
+
+  <view class="list" wx:if="{{loading}}">
+    <view class="product-row" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+      <view class="row-media skeleton"></view>
+      <view class="row-body">
+        <view class="skeleton sk" style="width: 45%;"></view>
+        <view class="skeleton sk small" style="width: 80%;"></view>
+        <view class="skeleton sk small" style="width: 30%;"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="cart-float" wx:if="{{cartCount > 0}}" bindtap="goCart">
+    <view class="cart-icon-wrap">
+      <image class="cart-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315100C' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5h2l2.2 10.2h9.4L20 8H7'/%3E%3Ccircle cx='9.4' cy='19' r='1.2'/%3E%3Ccircle cx='17' cy='19' r='1.2'/%3E%3C/svg%3E" mode="aspectFit" />
+      <view class="cart-badge">{{cartCount}}</view>
+    </view>
+    <view class="cart-copy">
+      <text class="cart-count">已选 {{cartCount}} 件</text>
+      <text class="cart-total">¥{{cartTotal}}</text>
+    </view>
+    <view class="cart-action">去结算</view>
+  </view>
+
+  <view class="tab-space"></view>
+  <view style="height: {{cartCount > 0 ? '140rpx' : '0'}};"></view>
+</view>

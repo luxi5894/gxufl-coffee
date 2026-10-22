@@ -1,0 +1,172 @@
+<nav-bar overlay transparent showBack title="" />
+
+<view class="page-bg page" wx:if="{{product}}">
+  <view class="hero">
+    <swiper
+      class="swiper"
+      circular="{{product.images.length > 1}}"
+      indicator-dots="{{product.images.length > 1}}"
+      indicator-color="rgba(200,169,126,0.28)"
+      indicator-active-color="#C8A97E"
+      bindchange="onSwiperChange"
+    >
+      <swiper-item wx:for="{{product.images}}" wx:key="*this">
+        <image
+          class="swiper-img"
+          src="{{item}}"
+          mode="aspectFill"
+          data-src="{{item}}"
+          bindtap="previewImage"
+        />
+      </swiper-item>
+    </swiper>
+    <view class="hero-shade"></view>
+    <view class="hero-counter" wx:if="{{product.images.length > 1}}">
+      <text>{{currentImage + 1}} / {{product.images.length}}</text>
+    </view>
+  </view>
+
+  <view class="sheet">
+    <view class="top-row">
+      <view class="tags">
+        <text class="tag" wx:for="{{product.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="rating">
+        <text class="star">★</text>
+        <text class="rating-num">{{product.ratingText}}</text>
+        <text class="sales">· {{product.sales}} 杯</text>
+      </view>
+    </view>
+
+    <text class="product-name display">{{product.name}}</text>
+    <text class="product-sub">{{product.subtitle}}</text>
+
+    <view class="price-row">
+      <view class="price-line">
+        <text class="price-main"><text class="symbol">¥</text>{{product.priceText}}</text>
+        <text class="price-origin" wx:if="{{product.originalPriceText}}">¥{{product.originalPriceText}}</text>
+      </view>
+      <text class="stock-text">库存 {{product.stock}}</text>
+    </view>
+
+    <view class="divider"></view>
+
+    <text class="desc">{{product.description}}</text>
+
+    <!-- 规格 -->
+    <view class="block" wx:if="{{product.specs.length}}">
+      <view class="block-head">
+        <text class="block-label">选择规格</text>
+        <text class="block-note">已选 {{selectedSpec.name}}</text>
+      </view>
+      <view class="spec-list">
+        <view
+          class="spec-chip {{selectedSpecIndex === index ? 'active' : ''}}"
+          wx:for="{{product.specs}}"
+          wx:key="id"
+          data-index="{{index}}"
+          bindtap="selectSpec"
+        >
+          <text class="spec-name">{{item.name}}</text>
+          <text class="spec-delta" wx:if="{{item.priceDelta > 0}}">+¥{{item.priceDelta}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 数量 -->
+    <view class="block">
+      <view class="block-head">
+        <text class="block-label">数量</text>
+        <text class="block-note">单份最多 99 杯</text>
+      </view>
+      <view class="stepper">
+        <view class="step-btn {{quantity === 1 ? 'disabled' : ''}}" bindtap="minus">
+          <text>−</text>
+        </view>
+        <text class="step-num">{{quantity}}</text>
+        <view class="step-btn {{quantity >= maxQuantity ? 'disabled' : ''}}" bindtap="plus">
+          <text>+</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 咖啡档案 -->
+    <view class="block">
+      <text class="block-label">咖啡档案</text>
+      <view class="archive">
+        <view class="archive-row">
+          <text class="archive-k">产地</text>
+          <text class="archive-v">{{product.origin || '—'}}</text>
+        </view>
+        <view class="archive-row">
+          <text class="archive-k">工艺</text>
+          <text class="archive-v">{{product.process || '—'}}</text>
+        </view>
+        <view class="archive-row">
+          <text class="archive-k">温度</text>
+          <view class="archive-tags">
+            <text class="archive-tag" wx:for="{{product.temperature}}" wx:key="*this">{{item}}</text>
+            <text class="archive-v" wx:if="{{!product.temperature.length}}">—</text>
+          </view>
+        </view>
+        <view class="archive-row">
+          <text class="archive-k">分类</text>
+          <text class="archive-v">{{product.categoryName}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 评价 -->
+    <view class="block" wx:if="{{reviews.length}}">
+      <view class="block-head">
+        <text class="block-label">客人评价</text>
+        <text class="block-note">{{reviewTotal}} 条</text>
+      </view>
+      <view class="review-list">
+        <view class="review" wx:for="{{reviews}}" wx:key="id">
+          <view class="review-head">
+            <view class="review-avatar">{{item.avatar}}</view>
+            <text class="review-name">{{item.nickname}}</text>
+            <text class="review-time">{{item.createdAtText}}</text>
+          </view>
+          <view class="review-stars">
+            <text
+              class="review-star {{item.rating >= star ? 'on' : ''}}"
+              wx:for="{{[1,2,3,4,5]}}"
+              wx:for-item="star"
+              wx:key="*this"
+            >★</text>
+          </view>
+          <text class="review-content">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view style="height: 220rpx;"></view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-bar">
+    <view class="cart-entry" bindtap="goCart">
+      <image class="cart-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C8A97E' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5h2l2.2 10.2h9.4L20 8H7'/%3E%3Ccircle cx='9.4' cy='19' r='1.2'/%3E%3Ccircle cx='17' cy='19' r='1.2'/%3E%3C/svg%3E" mode="aspectFit" />
+      <view class="cart-badge" wx:if="{{cartCount > 0}}">{{cartCount}}</view>
+    </view>
+    <view class="bottom-price">
+      <text class="bp-label">合计</text>
+      <text class="bp-value"><text class="bp-symbol">¥</text>{{totalText}}</text>
+    </view>
+    <view class="bottom-btns">
+      <view class="add-btn" bindtap="addToCart">加入购物车</view>
+      <view class="buy-btn" bindtap="buyNow">立即购买</view>
+    </view>
+  </view>
+</view>
+
+<view class="page-bg page" wx:if="{{loading}}">
+  <view class="skeleton" style="height: 700rpx; border-radius: 0;"></view>
+  <view class="sheet">
+    <view class="skeleton sk" style="width: 55%; height: 38rpx;"></view>
+    <view class="skeleton sk" style="width: 80%;"></view>
+    <view class="skeleton sk" style="width: 35%;"></view>
+  </view>
+</view>

@@ -1,0 +1,92 @@
+<nav-bar overlay transparent showBack title="" />
+
+<view class="page-bg page">
+  <view class="hero">
+    <image class="hero-img" src="{{heroUrl}}" mode="aspectFill" />
+    <view class="hero-shade"></view>
+    <view class="hero-copy">
+      <text class="brand-en display">GXUFL</text>
+      <text class="brand-cn">咖 啡 厅 · COFFEE ATELIER</text>
+      <text class="brand-desc">六国风味，一杯校园时光。</text>
+    </view>
+  </view>
+
+  <view class="sheet">
+    <view class="tabs">
+      <view class="tab {{mode === 'login' ? 'active' : ''}}" data-mode="login" bindtap="switchMode">登录</view>
+      <view class="tab {{mode === 'register' ? 'active' : ''}}" data-mode="register" bindtap="switchMode">注册</view>
+    </view>
+
+    <view class="form">
+      <view class="field" wx:if="{{mode === 'register'}}">
+        <text class="field-label">昵称</text>
+        <view class="field-box">
+          <input
+            class="field-input"
+            placeholder="怎么称呼你"
+            placeholder-class="ph"
+            maxlength="20"
+            value="{{nickname}}"
+            bindinput="onNickname"
+          />
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">手机号</text>
+        <view class="field-box">
+          <input
+            class="field-input"
+            type="number"
+            maxlength="11"
+            placeholder="11 位手机号"
+            placeholder-class="ph"
+            value="{{phone}}"
+            bindinput="onPhone"
+          />
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">密码</text>
+        <view class="field-box">
+          <input
+            class="field-input"
+            password="{{!showPassword}}"
+            placeholder="至少 6 位"
+            placeholder-class="ph"
+            value="{{password}}"
+            bindinput="onPassword"
+          />
+          <text class="eye" bindtap="togglePassword">{{showPassword ? '隐藏' : '显示'}}</text>
+        </view>
+      </view>
+
+      <view class="field" wx:if="{{mode === 'register'}}">
+        <text class="field-label">确认密码</text>
+        <view class="field-box">
+          <input
+            class="field-input"
+            password
+            placeholder="再输入一次"
+            placeholder-class="ph"
+            value="{{confirmPwd}}"
+            bindinput="onConfirm"
+            bindconfirm="submit"
+          />
+        </view>
+      </view>
+
+      <button class="btn-gold submit {{submitting ? 'disabled' : ''}}" bindtap="submit">
+        {{submitting ? '请稍候…' : (mode === 'login' ? '登 录' : '创建账号')}}
+      </button>
+    </view>
+
+    <view class="demo-hint">
+      <text class="demo-label">体验账号</text>
+      <text class="demo-value">13800000000 / 123456</text>
+    </view>
+
+    <text class="agreement">登录即表示同意《用户服务协议》与隐私政策</text>
+  </view>
+</view>

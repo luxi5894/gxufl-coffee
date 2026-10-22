@@ -1,0 +1,84 @@
+<nav-bar title="我的" subtitle="Profile" />
+
+<view class="page-bg page">
+  <!-- 已登录 -->
+  <view class="profile-card" wx:if="{{loggedIn}}">
+    <view class="profile-glow"></view>
+    <view class="profile-top">
+      <text class="eyebrow">GXUFL COFFEE</text>
+      <text class="member-tag">校园会员</text>
+    </view>
+    <view class="user-row">
+      <view class="avatar">
+        <image wx:if="{{user.avatar}}" class="avatar-img" src="{{user.avatar}}" mode="aspectFill" />
+        <text wx:else class="avatar-char">{{avatarChar}}</text>
+      </view>
+      <view class="user-copy">
+        <view class="name-row" bindtap="editNickname">
+          <text class="user-name">{{user.nickname}}</text>
+          <text class="edit">编辑</text>
+        </view>
+        <text class="user-phone">{{phoneMasked}}</text>
+      </view>
+    </view>
+    <view class="stats-row">
+      <view class="stat">
+        <text class="stat-num">{{stats.orderCount}}</text>
+        <text class="stat-label">累计订单</text>
+      </view>
+      <view class="stat-line"></view>
+      <view class="stat">
+        <text class="stat-num">{{stats.completedCount}}</text>
+        <text class="stat-label">完成取餐</text>
+      </view>
+      <view class="stat-line"></view>
+      <view class="stat">
+        <text class="stat-num">¥{{stats.totalSpentText}}</text>
+        <text class="stat-label">累计消费</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 未登录 -->
+  <view class="guest-card" wx:if="{{!loggedIn}}">
+    <view class="guest-glow"></view>
+    <text class="guest-mark display">“</text>
+    <text class="guest-title">坐下来，喝一杯</text>
+    <text class="guest-desc">登录后同步订单、购物车与评价</text>
+    <button class="btn-gold guest-btn" bindtap="goLogin">登录 / 注册</button>
+  </view>
+
+  <!-- 菜单 -->
+  <view class="menu-group">
+    <view
+      class="menu-item"
+      wx:for="{{menuItems}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      data-url="{{item.url}}"
+      bindtap="onMenu"
+    >
+      <view class="menu-icon-wrap">
+        <image class="menu-icon" src="{{item.icon}}" mode="aspectFit" />
+      </view>
+      <view class="menu-copy">
+        <text class="menu-label">{{item.label}}</text>
+        <text class="menu-sub">{{item.sub}}</text>
+      </view>
+      <view class="menu-badge" wx:if="{{item.key === 'cart' && cartCount > 0}}">{{cartCount}}</view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="logout" wx:if="{{loggedIn}}" bindtap="logout">
+    <text>退出登录</text>
+  </view>
+
+  <view class="brand-footer">
+    <text class="footer-en">GXUFL COFFEE ATELIER</text>
+    <text class="footer-cn">广西外国语学院 · 南宁</text>
+    <text class="footer-ver">v2.0 · Crafted for campus</text>
+  </view>
+
+  <view class="tab-space"></view>
+</view>

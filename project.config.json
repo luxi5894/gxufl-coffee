@@ -1,0 +1,33 @@
+{
+  "description": "GXUFL Coffee Atelier · 广西外国语学院咖啡厅点单系统",
+  "miniprogramRoot": "coffee-miniprogram/",
+  "compileType": "miniprogram",
+  "appid": "wx794e40764195acb8",
+  "projectname": "gxufl-coffee",
+  "libVersion": "3.16.1",
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "enhance": true,
+    "urlCheck": false,
+    "minifyWXML": true,
+    "minifyWXSS": true,
+    "compileHotReLoad": true,
+    "useCompilerPlugins": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

@@ -1,0 +1,95 @@
+<nav-bar title="我的订单" subtitle="My orders" />
+
+<view class="page-bg page">
+  <view class="head">
+    <text class="eyebrow">Order History</text>
+    <text class="head-title display">每一杯的进度</text>
+    <text class="head-desc">下拉可刷新，制作完成后凭取餐号到吧台领取。</text>
+  </view>
+
+  <view class="just-ordered" wx:if="{{highlight}}">
+    <view class="jo-left">
+      <text class="jo-label">刚刚下单成功</text>
+      <text class="jo-code">{{highlight.pickupCode}}</text>
+      <text class="jo-note">请凭取餐号取餐</text>
+    </view>
+    <text class="jo-close" bindtap="dismissHighlight">×</text>
+  </view>
+
+  <scroll-view class="tabs-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view
+      class="tab {{activeStatus === item.value ? 'active' : ''}}"
+      wx:for="{{tabs}}"
+      wx:key="value"
+      data-value="{{item.value}}"
+      bindtap="switchStatus"
+    >
+      {{item.label}}
+    </view>
+  </scroll-view>
+
+  <view class="signin" wx:if="{{!loggedIn}}">
+    <text class="signin-mark display">“</text>
+    <text class="signin-title">登录后查看订单</text>
+    <text class="signin-desc">从下单、制作到取餐，进度都在这里</text>
+    <button class="btn-gold signin-btn" bindtap="goLogin">登录 / 注册</button>
+  </view>
+
+  <view class="list" wx:if="{{loggedIn && orders.length}}">
+    <view class="order-card" wx:for="{{orders}}" wx:key="id">
+      <view class="order-head">
+        <view>
+          <text class="order-no">{{item.orderNo}}</text>
+          <text class="order-time">{{item.createdAtText}}</text>
+        </view>
+        <text class="status-pill {{item.statusClass}}">{{item.statusText}}</text>
+      </view>
+
+      <view class="order-items">
+        <view class="order-item" wx:for="{{item.items}}" wx:for-item="product" wx:key="id">
+          <image class="oi-img" src="{{product.imageUrl}}" mode="aspectFill" />
+          <view class="oi-body">
+            <text class="oi-name">{{product.productName}}</text>
+            <text class="oi-spec">{{product.specName || '标准规格'}}</text>
+          </view>
+          <view class="oi-right">
+            <text class="oi-price">¥{{product.priceText}}</text>
+            <text class="oi-qty">× {{product.quantity}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="order-total">
+        <text class="ot-label">共 {{item.itemCount}} 件</text>
+        <text class="ot-value">合计 <text class="ot-price">¥{{item.totalText}}</text></text>
+      </view>
+
+      <view class="order-actions">
+        <view class="action ghost" wx:if="{{item.canCancel}}" data-id="{{item.id}}" bindtap="cancelOrder">取消订单</view>
+        <view class="action gold" wx:if="{{item.canConfirm}}" data-id="{{item.id}}" bindtap="confirmOrder">确认取餐</view>
+        <view class="action gold" wx:if="{{item.canReview}}" data-id="{{item.id}}" data-product="{{item.items[0].productId}}" bindtap="reviewOrder">去评价</view>
+        <view class="action ghost" wx:if="{{item.statusClass === 'done'}}" bindtap="goMenu">再来一杯</view>
+        <view class="pickup" wx:if="{{item.showPickup}}">
+          <text class="pickup-k">取餐号</text>
+          <text class="pickup-v">{{item.pickupCode}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="load-state">{{loadingMore ? '正在续杯…' : (hasMore ? '上滑看更多' : '— 已经到底了 —')}}</view>
+  </view>
+
+  <view class="empty" wx:if="{{loggedIn && !orders.length && !loading}}">
+    <text class="mark">“</text>
+    <text class="title">{{activeStatus === 'all' ? '还没有点过咖啡' : '这个状态下没有订单'}}</text>
+    <text class="desc">去菜单挑一杯，开始今天的第一口</text>
+    <button class="btn-outline empty-btn" bindtap="goMenu">去点单</button>
+  </view>
+
+  <view class="list" wx:if="{{loggedIn && loading}}">
+    <view class="skeleton sk-card"></view>
+    <view class="skeleton sk-card"></view>
+  </view>
+
+  <view class="tab-space"></view>
+</view>

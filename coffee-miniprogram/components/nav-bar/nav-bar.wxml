@@ -1,0 +1,12 @@
+<view class="nav {{transparent ? 'transparent' : ''}}" style="padding-top: {{statusBarHeight}}px;">
+  <view class="bar" style="height: {{navHeight}}px;">
+    <view class="back" wx:if="{{showBack}}" bindtap="onBack">
+      <text class="arrow">‹</text>
+    </view>
+    <view class="title-wrap">
+      <text class="title" wx:if="{{title}}">{{title}}</text>
+      <text class="sub" wx:if="{{subtitle}}">{{subtitle}}</text>
+    </view>
+  </view>
+</view>
+<view wx:if="{{!overlay}}" style="height: {{totalHeight}}px;"></view>

@@ -1,0 +1,160 @@
+<nav-bar overlay transparent title="" />
+
+<view class="page-bg page">
+
+  <!-- Hero -->
+  <view class="hero">
+    <image class="hero-img" src="{{heroUrl}}" mode="aspectFill" />
+    <view class="hero-shade"></view>
+    <view class="hero-top">
+      <text class="eyebrow">GXUFL · COFFEE ATELIER</text>
+    </view>
+    <view class="hero-copy">
+      <text class="hero-date">{{greeting}} · {{dateText}}</text>
+      <text class="hero-title display">一整个东南亚</text>
+      <text class="hero-title display second">都在这一杯里</text>
+      <view class="hero-rule">
+        <view class="rule-line"></view>
+        <text class="hero-desc">六国风味 · 校园自取 · 每日现制</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索入口 -->
+  <view class="search-entry" bindtap="goMenu">
+    <image class="search-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C8A97E' stroke-width='1.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 21 21'/%3E%3C/svg%3E" mode="aspectFit" />
+    <text class="search-text">搜索咖啡、风味或产地</text>
+    <view class="search-action">点单</view>
+  </view>
+
+  <!-- 门店信息条 -->
+  <view class="store-strip">
+    <view class="store-left">
+      <view class="live-dot"></view>
+      <text class="store-title">校园门店营业中</text>
+      <text class="store-hours">08:00 – 22:00</text>
+    </view>
+    <text class="store-right">到店自取 · 免排队</text>
+  </view>
+
+  <!-- 分类 -->
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-sub">Six Origins</text>
+        <text class="section-title">按产地探索</text>
+      </view>
+      <text class="section-more" bindtap="goMenu">全部菜单</text>
+    </view>
+    <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view
+        class="category-item"
+        wx:for="{{categories}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="goCategory"
+      >
+        <view class="category-ring">
+          <text class="category-code">{{item.icon}}</text>
+        </view>
+        <text class="category-name">{{item.name}}</text>
+        <text class="category-en">{{item.nameEn}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 推荐 -->
+  <view class="section" wx:if="{{recommendList.length}}">
+    <view class="section-head">
+      <view>
+        <text class="section-sub">Barista's Choice</text>
+        <text class="section-title">主理人推荐</text>
+      </view>
+    </view>
+    <scroll-view class="recommend-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view
+        class="recommend-card"
+        wx:for="{{recommendList}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="goDetail"
+      >
+        <image class="recommend-img" src="{{item.imageUrl}}" mode="aspectFill" />
+        <view class="recommend-shade"></view>
+        <view class="recommend-tag" wx:if="{{item.tags.length}}">{{item.tags[0]}}</view>
+        <view class="recommend-copy">
+          <text class="recommend-name">{{item.name}}</text>
+          <text class="recommend-sub">{{item.subtitle}}</text>
+          <view class="recommend-bottom">
+            <text class="recommend-price">¥{{item.priceText}}</text>
+            <text class="recommend-arrow">→</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 全部菜单 -->
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-sub">The Menu</text>
+        <text class="section-title">本季咖啡</text>
+      </view>
+      <text class="section-more" bindtap="goMenu">查看全部</text>
+    </view>
+
+    <view class="product-grid" wx:if="{{!loading}}">
+      <view
+        class="product-card"
+        wx:for="{{products}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="goDetail"
+      >
+        <view class="product-media">
+          <image class="product-img" src="{{item.imageUrl}}" mode="aspectFill" />
+          <view class="product-badge" wx:if="{{item.tags.length}}">{{item.tags[0]}}</view>
+          <view class="product-plus">+</view>
+        </view>
+        <view class="product-body">
+          <text class="product-name">{{item.name}}</text>
+          <text class="product-sub">{{item.subtitle}}</text>
+          <view class="product-foot">
+            <text class="product-price">¥{{item.priceText}}</text>
+            <text class="product-sales">{{item.sales}} 杯</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="product-grid" wx:if="{{loading}}">
+      <view class="product-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+        <view class="product-media skeleton"></view>
+        <view class="product-body">
+          <view class="skeleton sk-line" style="width: 60%;"></view>
+          <view class="skeleton sk-line small" style="width: 85%;"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!loading && !products.length}}">
+      <text class="mark">“</text>
+      <text class="title">菜单正在准备中</text>
+      <text class="desc">请稍后刷新，或到店询问咖啡师</text>
+    </view>
+
+    <view class="load-more" wx:if="{{hasMore && !loading}}" bindtap="loadMore">
+      <text>再看一些</text>
+      <view class="load-line"></view>
+    </view>
+  </view>
+
+  <view class="brand-footer">
+    <text class="footer-en">GXUFL COFFEE ATELIER</text>
+    <text class="footer-cn">广西外国语学院 · 南宁</text>
+    <text class="footer-note">Coffee, carefully made.</text>
+  </view>
+
+  <view class="tab-space"></view>
+</view>

@@ -1,0 +1,9 @@
+{
+  "desc": "GXUFL Coffee Atelier",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

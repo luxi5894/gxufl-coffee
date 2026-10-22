@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Java
+coffee-server/target/
+coffee-server/uploads/
+*.log
+
+# Node
+coffee-admin/node_modules/
+coffee-admin/dist/
+npm-debug.log*
+
+# WeChat local
+project.private.config.json
+coffee-miniprogram/miniprogram_npm/
+
+# 旧版本备份（仅保留在本地）
+legacy/
+
+# Secrets
+.env
+.env.local

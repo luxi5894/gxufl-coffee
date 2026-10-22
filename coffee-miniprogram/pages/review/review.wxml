@@ -1,0 +1,130 @@
+<nav-bar title="咖啡口碑" subtitle="Voices" showBack />
+
+<view class="page-bg page">
+  <view class="intro">
+    <text class="eyebrow">Your Voice</text>
+    <text class="intro-title display">写下这一杯</text>
+    <text class="intro-desc">你的感受，会成为下一位客人的参考。</text>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{tab === 'write' ? 'active' : ''}}" data-tab="write" bindtap="switchTab">写评价</view>
+    <view class="tab {{tab === 'mine' ? 'active' : ''}}" data-tab="mine" bindtap="switchTab">我的评价</view>
+  </view>
+
+  <!-- 写评价 -->
+  <block wx:if="{{tab === 'write'}}">
+    <view class="card form-card">
+      <view class="block-head">
+        <text class="block-label">选择咖啡</text>
+      </view>
+      <picker
+        mode="selector"
+        range="{{productNames}}"
+        value="{{productIndex}}"
+        bindchange="onProductChange"
+      >
+        <view class="product-picker">
+          <image class="picker-img" src="{{selectedProduct.imageUrl}}" mode="aspectFill" wx:if="{{selectedProduct.imageUrl}}" />
+          <view class="picker-placeholder" wx:else>☕</view>
+          <view class="picker-copy">
+            <text class="picker-name">{{selectedProduct.name || '选择一款咖啡'}}</text>
+            <text class="picker-sub">点击切换咖啡</text>
+          </view>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+
+      <view class="block-head rating-head">
+        <text class="block-label">评分</text>
+        <text class="block-note">{{rating}} 星</text>
+      </view>
+      <view class="rating-row">
+        <text
+          class="rating-star {{rating >= star ? 'on' : ''}}"
+          wx:for="{{[1,2,3,4,5]}}"
+          wx:for-item="star"
+          wx:key="*this"
+          data-value="{{star}}"
+          bindtap="setRating"
+        >★</text>
+      </view>
+
+      <view class="block-head content-head">
+        <text class="block-label">评价内容</text>
+        <text class="block-note">{{content.length}} / 200</text>
+      </view>
+      <textarea
+        class="content"
+        placeholder="写下风味、温度、香气，或那一刻的心情…"
+        placeholder-class="ph"
+        maxlength="200"
+        value="{{content}}"
+        bindinput="onContent"
+      />
+
+      <button class="btn-gold submit {{submitting ? 'disabled' : ''}}" bindtap="submit">
+        {{submitting ? '提交中…' : '发布评价'}}
+      </button>
+    </view>
+
+    <view class="section" wx:if="{{recentReviews.length}}">
+      <view class="section-head">
+        <view>
+          <text class="section-sub">Recent Voices</text>
+          <text class="section-title">最近评价</text>
+        </view>
+      </view>
+      <view class="review-card" wx:for="{{recentReviews}}" wx:key="id">
+        <view class="review-head">
+          <view class="avatar">{{item.avatar}}</view>
+          <text class="review-name">{{item.nickname}}</text>
+          <text class="review-time">{{item.createdAtText}}</text>
+        </view>
+        <view class="stars">
+          <text
+            class="s {{item.rating >= star ? 'on' : ''}}"
+            wx:for="{{[1,2,3,4,5]}}"
+            wx:for-item="star"
+            wx:key="*this"
+          >★</text>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 我的评价 -->
+  <block wx:if="{{tab === 'mine'}}">
+    <view class="list" wx:if="{{myReviews.length}}">
+      <view class="my-card" wx:for="{{myReviews}}" wx:key="id">
+        <view class="my-head">
+          <image class="my-img" src="{{item.imageUrl}}" mode="aspectFill" />
+          <view class="my-copy">
+            <text class="my-product">{{item.productName}}</text>
+            <text class="my-time">{{item.createdAtText}}</text>
+          </view>
+          <text class="status {{item.status === 1 ? 'show' : ''}}">{{item.status === 1 ? '展示中' : '已隐藏'}}</text>
+        </view>
+        <view class="stars">
+          <text
+            class="s {{item.rating >= star ? 'on' : ''}}"
+            wx:for="{{[1,2,3,4,5]}}"
+            wx:for-item="star"
+            wx:key="*this"
+          >★</text>
+        </view>
+        <text class="my-content">{{item.content}}</text>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!myReviews.length && !loadingMine}}">
+      <text class="mark">“</text>
+      <text class="title">还没有写过评价</text>
+      <text class="desc">喝完一杯后，回来写下你的感受</text>
+      <button class="btn-outline empty-btn" data-tab="write" bindtap="switchTab">去写评价</button>
+    </view>
+  </block>
+
+  <view style="height: 80rpx;"></view>
+</view>
