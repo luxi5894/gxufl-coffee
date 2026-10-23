@@ -1,19 +1,184 @@
-# GXUFL Coffee Atelier · 广西外国语学院咖啡厅点单系统
+<div align="center">
 
-一个校园咖啡厅的全栈点单系统：**微信原生小程序 + Spring Boot 后端 + Vue 3 商家管理后台**。
+# GXUFL Coffee Atelier
 
-以「东南亚六国咖啡」为品牌主题，视觉延续深咖啡黑与香槟金的安静奢华风格；小程序端覆盖从浏览、选规格、购物车、下单到取餐与评价的完整闭环，管理端覆盖商品、分类、订单、用户、评价与经营数据。
+**广西外国语学院咖啡厅点单系统**
+
+微信原生小程序 · Spring Boot · Vue 3 商家管理后台
+
+![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-6DB33F?logo=springboot&logoColor=white)
+![MyBatis-Plus](https://img.shields.io/badge/MyBatis--Plus-3.5-1E90FF)
+![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1?logo=mysql&logoColor=white)
+![Vue](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vuedotjs&logoColor=white)
+![Element Plus](https://img.shields.io/badge/Element%20Plus-2.8-409EFF?logo=element&logoColor=white)
+![WeChat](https://img.shields.io/badge/WeChat-Mini%20Program-07C160?logo=wechat&logoColor=white)
+
+</div>
 
 ---
+
+## 项目简介
+
+GXUFL Coffee Atelier 是一套面向校园咖啡厅的前后端分离点单系统，以「东南亚六国咖啡」为品牌主题，覆盖用户点单与门店经营两条完整动线。
+
+用户通过微信小程序浏览菜单、选择规格、加入购物车、下单、查看取餐号并完成评价；店员通过 Vue 管理后台处理订单、维护菜单与库存，并查看经营数据。系统采用 **Spring Boot + MyBatis-Plus + MySQL** 提供 REST API，两端通过 JWT 接入，统一响应结构与错误处理。
+
+- **三端工程**：微信原生小程序、Spring Boot 服务端、Vue 3 管理后台
+- **完整闭环**：浏览 → 选规格 → 购物车 → 下单 → 制作 → 取餐 → 评价
+- **经营能力**：商品、分类、订单、用户、评价管理与今日 / 7 日经营数据
+- **项目规模**：8 张业务表、53 个 REST 接口、10 个小程序页面、6 个后台业务模块
+
+---
+
+## 技术架构
+
+```mermaid
+flowchart LR
+    subgraph Client["客户端"]
+        MP["微信原生小程序<br/>10 个页面 · 自定义导航 / TabBar"]
+        AD["Vue 3 管理后台<br/>Element Plus · ECharts"]
+    end
+
+    subgraph Server["Spring Boot 3.2 / Java 17"]
+        AUTH["JWT 鉴权拦截器<br/>角色隔离 · 账号状态校验"]
+        API["REST API<br/>9 个控制器 / 53 个接口"]
+        SERVICE["业务层<br/>订单 · 商品 · 购物车 · 评价 · 统计"]
+        MAPPER["MyBatis-Plus<br/>Lambda 查询 · 分页插件"]
+    end
+
+    DB[("MySQL 8.0<br/>coffee_shop · 8 张表")]
+    FS["本地文件<br/>品牌图 / 上传图"]
+
+    MP -->|HTTPS + Bearer Token| AUTH
+    AD -->|Axios /api 代理| AUTH
+    AUTH --> API --> SERVICE --> MAPPER --> DB
+    SERVICE --> FS
+```
 
 ## 技术栈
 
 | 端 | 技术 |
 |---|---|
 | 微信小程序 | 微信原生（WXML / WXSS / JS）、自定义导航栏、自定义 TabBar |
-| 后端 | Java 17+、Spring Boot 3.2、MyBatis-Plus 3.5、MySQL 8.0+、JWT、BCrypt |
+| 后端 | Java 17、Spring Boot 3.2、MyBatis-Plus 3.5、MySQL 8.0+、JWT（JJWT 0.12）、BCrypt |
 | 管理后台 | Vue 3、Vite 5、Element Plus、ECharts、Pinia、Vue Router |
 | 数据库 | MySQL 8.0+（已使用 MySQL 9.7 实测） |
+
+---
+
+## 功能特性
+
+### 微信小程序
+
+- **沉浸式首页**：品牌 Hero、六国分类、主理人推荐、本季咖啡
+- **点单**：服务端关键词搜索、分类筛选、规格选择、快速加购
+- **商品详情**：图集预览、规格与加价、数量、咖啡档案、近期评价
+- **购物车**：勾选、改数量、移除、清空、合计、结算
+- **确认订单**：门店信息、商品明细、备注、到店支付
+- **订单中心**：状态筛选、取餐号、取消订单、确认取餐、再来一杯
+- **评价**：写评价、我的评价、展示状态
+- **我的**：用户资料、累计订单 / 消费、购物车角标、退出登录
+- **登录注册**：真实接口、JWT、登录态持久化、401 自动跳转
+
+### 商家管理后台
+
+- **经营概览**：今日营业额 / 订单 / 新增用户、累计数据、7 日趋势、状态分布、本周热销、最近订单
+- **商品管理**：搜索、分类筛选、图片上传、规格与加价、库存、推荐位、上下架
+- **分类管理**：六国分类的新增、编辑、排序、启停
+- **订单管理**：状态筛选、关键词检索、详情抽屉、制作流转、取消回补库存
+- **用户管理**：搜索、注册信息、账号启停
+- **评价管理**：关键词 / 状态筛选、展示与隐藏、删除
+- **界面**：暗金主题、响应式布局、窄屏抽屉导航
+
+### 后端服务
+
+- JWT 无状态鉴权，区分 `USER` / `ADMIN`
+- BCrypt 密码加密，账号停用即时生效
+- 服务端计算价格与总价，库存与销量事务扣减
+- 取消订单自动回补库存与销量
+- 商品评价后自动重算评分
+- 图片上传、静态资源托管、统一响应与异常处理
+- 管理端统计接口（今日 / 7 日趋势 / 热销 / 状态分布）
+
+---
+
+## 技术实现亮点
+
+### 1. 价格完全由服务端计算
+
+客户端只提交商品 ID、规格 ID 与数量，单价与总价由服务端根据商品价格和规格加价重新计算，避免前端改价。
+
+### 2. 条件更新防止库存超卖
+
+库存判断与扣减放在同一条 SQL 中完成，受影响行数为 0 即判定库存不足，整个下单流程处于同一事务：
+
+```java
+int affected = productMapper.update(null, Wrappers.<Product>lambdaUpdate()
+        .eq(Product::getId, product.getId())
+        .ge(Product::getStock, quantity)
+        .setSql("stock = stock - " + quantity)
+        .setSql("sales = sales + " + quantity));
+if (affected == 0) {
+    throw new BizException("「" + product.getName() + "」库存不足");
+}
+```
+
+### 3. 订单明细快照
+
+`order_item` 在下单时保存商品名称、图片、规格与成交单价。商品后续改价、改名或下架都不会影响历史订单与统计口径。
+
+### 4. 统一鉴权与资源归属校验
+
+- `JwtUtil` 签发包含 `userId` 与 `role` 的 Token；
+- `AuthInterceptor` 解析 Token、回查用户状态、校验 `/admin/**` 角色；
+- 登录信息写入 `UserContext`（ThreadLocal），请求结束自动清理；
+- 购物车、订单、评价的读写均校验 `userId`，防止横向越权。
+
+### 5. 列表查询避免 N+1
+
+商品、订单、购物车列表先分页查询主表，再用 `in` / `selectBatchIds` 批量查询规格、明细与用户，在内存中组装 VO，查询次数不随记录数增长。
+
+### 6. 双端统一的请求层
+
+小程序 `utils/request.js` 与后台 `api/http.js` 都封装了 Token 注入、统一解包、401 清理登录态与错误提示，页面中不出现硬编码地址。
+
+---
+
+## 数据库设计
+
+```mermaid
+erDiagram
+    SYS_USER ||--o{ ORDERS : places
+    SYS_USER ||--o{ CART_ITEM : owns
+    SYS_USER ||--o{ REVIEW : writes
+    CATEGORY ||--o{ PRODUCT : contains
+    PRODUCT ||--o{ PRODUCT_SPEC : has
+    PRODUCT ||--o{ CART_ITEM : in
+    PRODUCT ||--o{ REVIEW : receives
+    ORDERS ||--o{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : snapshot_of
+```
+
+| 表 | 作用 |
+|---|---|
+| `sys_user` | 管理员与普通用户，`phone` 唯一，`role` 区分角色 |
+| `category` | 东南亚六国分类 |
+| `product` | 咖啡商品、价格、库存、销量、评分、推荐位 |
+| `product_spec` | 商品规格与加价 |
+| `cart_item` | 购物车，同商品同规格合并 |
+| `orders` | 订单主表，订单号唯一 |
+| `order_item` | 订单明细快照 |
+| `review` | 商品评价与展示状态 |
+
+设计要点：
+
+- 金额统一使用 `DECIMAL(10,2)`，Java 侧使用 `BigDecimal`
+- 订单号唯一索引兜底，取餐号为 4 位数字
+- 不建物理外键，由业务层校验关联完整性
+- 订单表按 `user_id`、`status`、`created_at` 建索引
+
+---
 
 ## 目录结构
 
@@ -52,13 +217,23 @@
 
 ## 快速开始
 
+### 环境要求
+
+| 依赖 | 版本 |
+|---|---|
+| JDK | 17+ |
+| Maven | 3.8+ |
+| Node.js | 18+ |
+| MySQL | 8.0+ |
+| 微信开发者工具 | 最新稳定版 |
+
 ### 1. 初始化 MySQL
 
 ```bash
 mysql -u root -p < docs/database.sql
 ```
 
-脚本会创建 `coffee_shop` 数据库、8 张业务表，并写入 6 款咖啡、分类、规格、示例用户/订单/评价。
+脚本会创建 `coffee_shop` 数据库、8 张业务表，并写入 6 款咖啡、分类、规格、示例用户 / 订单 / 评价。
 
 ### 2. 启动后端
 
@@ -136,42 +311,6 @@ npm run build
 
 ---
 
-## 功能清单
-
-### 小程序端
-
-- 沉浸式首页：品牌 Hero、六国分类、主理人推荐、本季咖啡
-- 点单页：服务端关键词搜索、分类筛选、规格选择、快速加购
-- 商品详情：图集预览、规格与加价、数量、咖啡档案、近期评价
-- 购物车：勾选、改数量、移除、清空、合计、结算
-- 确认订单：门店信息、商品明细、备注、到店支付
-- 订单中心：状态筛选、取餐号、取消订单、确认取餐、去评价、再来一杯
-- 评价：写评价、我的评价、展示状态
-- 我的：用户信息、累计订单/消费、购物车角标、修改昵称、退出登录
-- 登录注册：真实接口、JWT、登录态持久化、401 自动跳转
-
-### 管理后台
-
-- 经营概览：今日营业额/订单/新增用户、累计数据、7 日趋势、状态分布、本周热销、最近订单
-- 商品管理：搜索、分类筛选、图片上传、规格与加价、库存、推荐位、上下架
-- 分类管理：六国分类的新增、编辑、排序、启停
-- 订单管理：状态筛选、关键词检索、详情抽屉、开始制作 → 制作完成 → 完成取餐、取消回补库存
-- 用户管理：搜索、注册信息、账号启停
-- 评价管理：关键词/状态筛选、卡片列表、展示与隐藏、删除
-- 全部页面采用暗金主题、响应式布局，并适配窄屏抽屉导航
-
-### 后端
-
-- JWT 无状态鉴权，区分 `USER` / `ADMIN`
-- BCrypt 密码加密
-- 服务端计算价格与总价，库存与销量事务扣减
-- 取消订单自动回补库存与销量
-- 商品评价后自动重算评分
-- 图片上传、静态资源托管、统一响应结构与异常处理
-- 管理端统计接口（今日 / 7 日趋势 / 热销 / 状态分布）
-
----
-
 ## API 概览
 
 统一响应：`{ "code": 200, "message": "success", "data": ... }`，鉴权接口需携带 `Authorization: Bearer <token>`。
@@ -183,9 +322,9 @@ npm run build
 | POST | `/api/auth/register` | - | 注册 |
 | POST | `/api/auth/login` | - | 登录 |
 | GET | `/api/auth/me` | 用户 | 当前用户 |
-| PUT | `/api/auth/me` | 用户 | 修改昵称/头像 |
+| PUT | `/api/auth/me` | 用户 | 修改昵称 / 头像 |
 | GET | `/api/categories` | - | 分类列表 |
-| GET | `/api/products` | - | 商品分页/搜索/分类 |
+| GET | `/api/products` | - | 商品分页 / 搜索 / 分类 |
 | GET | `/api/products/recommended` | - | 推荐商品 |
 | GET | `/api/products/{id}` | - | 商品详情（含规格） |
 | GET | `/api/products/{id}/reviews` | - | 商品评价 |
@@ -220,28 +359,19 @@ npm run build
 | GET | `/api/admin/orders/{id}` | 订单详情 |
 | PUT | `/api/admin/orders/{id}/status` | 更新订单状态 |
 | GET | `/api/admin/users` | 用户列表 |
-| PUT | `/api/admin/users/{id}/status` | 启用/停用用户 |
+| PUT | `/api/admin/users/{id}/status` | 启用 / 停用用户 |
 | GET | `/api/admin/reviews` | 评价列表 |
-| PUT | `/api/admin/reviews/{id}/status` | 展示/隐藏 |
+| PUT | `/api/admin/reviews/{id}/status` | 展示 / 隐藏 |
 | DELETE | `/api/admin/reviews/{id}` | 删除评价 |
 | POST | `/api/admin/upload` | 上传商品图片 |
 
-订单状态：`0 待制作` → `1 制作中` → `2 待取餐` → `3 已完成`；`4 已取消`。
+### 订单状态
 
----
+`0 待制作` → `1 制作中` → `2 待取餐` → `3 已完成`；`4 已取消`。
 
-## 本次重构修复与优化
-
-- 统一请求配置，移除页面内散落的 `127.0.0.1` 硬编码
-- 用真实 JWT 登录替换原有的「本地缓存假登录」
-- 搜索改为服务端检索，修复原先只过滤已加载分页的问题
-- 下拉刷新同时刷新推荐与列表，并正确结束刷新态
-- 「立即购买」接入规格、数量、结算与下单，不再是空 Toast
-- 新增购物车、订单、取餐、评价完整业务闭环
-- 修复「我的」页重复导航栏、硬编码留言数与登录态不一致
-- 统一图片地址解析，兼容本地上传与远程图片
-- 补齐加载骨架、空状态、错误提示、登录失效跳转
-- 后台采用统一的暗金设计语言，并完成桌面/窄屏适配
+- 用户侧：「待制作」可取消，「待取餐」可确认取餐
+- 店员侧：推进制作流程；未取消订单可取消并回补库存
+- 已取消订单不可重新流转
 
 ---
 
@@ -257,11 +387,23 @@ npm run build
 ## 部署提示
 
 - 后端默认上下文路径为 `/api`，静态图片位于 `/api/images/**`，上传图片位于 `/api/uploads/**`
-- 生产环境请修改 `JWT_SECRET`、数据库密码，并关闭不必要的跨域来源
+- 生产环境请修改 `JWT_SECRET`、数据库密码，并收敛跨域来源
 - 建议 Nginx 托管 `coffee-admin/dist`，并将 `/api` 反向代理到 Spring Boot
 - 当前支付方式为「到店支付」，未接入微信支付；如需线上支付，可在订单状态机中增加支付态
 - 小程序上线前需配置 HTTPS 域名与 request 合法域名，并将 `utils/config.js` 切换到生产地址
 
+## 后续规划
+
+- 补充 JUnit / MockMvc 单测与 Testcontainers 集成测试
+- 下单幂等键与更严格的订单状态流转白名单
+- 菜单与统计接入 Redis 缓存
+- 图片迁移对象存储，增加 MIME 与尺寸校验
+- 微信支付、多门店与 Docker Compose 部署
+
 ---
 
-GXUFL Coffee Atelier · Coffee, carefully made.
+<div align="center">
+
+**GXUFL Coffee Atelier** · Coffee, carefully made.
+
+</div>
