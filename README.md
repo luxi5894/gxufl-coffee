@@ -1,18 +1,20 @@
 <div align="center">
 
-# GXUFL Coffee Atelier
+<h1>GXUFL Coffee Atelier</h1>
 
-**广西外国语学院咖啡厅点单系统**
+<p><strong>广西外国语学院咖啡厅点单系统</strong></p>
 
-微信原生小程序 · Spring Boot · Vue 3 商家管理后台
+<p>微信原生小程序 · Spring Boot · Vue 3 商家管理后台</p>
 
-![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-6DB33F?logo=springboot&logoColor=white)
-![MyBatis-Plus](https://img.shields.io/badge/MyBatis--Plus-3.5-1E90FF)
-![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1?logo=mysql&logoColor=white)
-![Vue](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vuedotjs&logoColor=white)
-![Element Plus](https://img.shields.io/badge/Element%20Plus-2.8-409EFF?logo=element&logoColor=white)
-![WeChat](https://img.shields.io/badge/WeChat-Mini%20Program-07C160?logo=wechat&logoColor=white)
+<p>
+  <img src="https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white" alt="Java 17">
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.2-6DB33F?logo=springboot&logoColor=white" alt="Spring Boot 3.2">
+  <img src="https://img.shields.io/badge/MyBatis--Plus-3.5-1E90FF" alt="MyBatis-Plus 3.5">
+  <img src="https://img.shields.io/badge/MySQL-8.0%2B-4479A1?logo=mysql&logoColor=white" alt="MySQL 8.0+">
+  <img src="https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vuedotjs&logoColor=white" alt="Vue 3.5">
+  <img src="https://img.shields.io/badge/Element%20Plus-2.8-409EFF?logo=element&logoColor=white" alt="Element Plus 2.8">
+  <img src="https://img.shields.io/badge/WeChat-Mini%20Program-07C160?logo=wechat&logoColor=white" alt="WeChat Mini Program">
+</p>
 
 </div>
 
@@ -404,6 +406,6 @@ npm run build
 
 <div align="center">
 
-**GXUFL Coffee Atelier** · Coffee, carefully made.
+<strong>GXUFL Coffee Atelier</strong> · Coffee, carefully made.
 
 </div>
